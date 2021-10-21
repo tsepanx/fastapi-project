@@ -6,18 +6,16 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from utils import RedisManager, gen_id
+from utils import RedisManager, generate_hash
 
-# -------
+# --------------
 
-host = "192.168.0.115"
+host = "192.168.0.115"  # TODO store as secrets
 pwd = "foobared"
 
 redis_manager = RedisManager(host=host, pwd=pwd)
 
-x = redis_manager.list_keys()
-print(x)
-print(gen_id(20))
+print(redis_manager.list_keys())
 
 # ---------------
 
@@ -35,22 +33,22 @@ class POSTLinkItem(BaseModel):
     description: Optional[str] = None
 
 
-@app.get("/id/{link_id}", response_model=GETLinkItem)
-async def get_by_id(link_id: str):
-    if redis_manager.exists_item(link_id):
-        url = redis_manager.get_item(link_id)
+@app.get("/id/{item_id}", response_model=GETLinkItem)
+async def get_by_id(item_id: str):
+    if redis_manager.exists_item(item_id):
+        d = redis_manager.get_dict(item_id)
 
-        return GETLinkItem(id=link_id, url=url)  # TODO store links fields as separate redis-hash dict
-
+        return GETLinkItem(id=item_id, **d)
     raise fastapi.HTTPException(status_code=404, detail="No such link ID")
 
 
 @app.post("/shorten", response_model=GETLinkItem)
 async def create_by_id(item: POSTLinkItem):
-    link_id = gen_id()
-    redis_manager.set_item(link_id, item.url)
+    item_id = generate_hash()
+    redis_manager.set_dict(item_id, item.dict())
 
-    return GETLinkItem.construct(**item.dict(), id=link_id)
+    x = GETLinkItem(id=item_id, **item.dict())
+    return x
 
 
 if __name__ == "__main__":
