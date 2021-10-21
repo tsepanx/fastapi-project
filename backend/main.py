@@ -22,33 +22,35 @@ print(redis_manager.list_keys())
 app = FastAPI()
 
 
-class GETLinkItem(BaseModel):
+class GETModel(BaseModel):
     id: str
     url: str
     description: Optional[str] = None
 
 
-class POSTLinkItem(BaseModel):
+class POSTModel(BaseModel):
     url: str
     description: Optional[str] = None
 
 
-@app.get("/api/id/{item_id}", response_model=GETLinkItem)
-async def get_by_id(item_id: str):
-    if redis_manager.exists_item(item_id):
-        d = redis_manager.get_dict(item_id)
+item_endpoint = '/api/item/'
 
-        return GETLinkItem(id=item_id, **d)
+
+@app.get(item_endpoint, response_model=GETModel)
+async def get_by_id(id: str):
+    if redis_manager.exists_item(id):
+        d = redis_manager.get_dict(id)
+
+        return GETModel(id=id, **d)
     raise fastapi.HTTPException(status_code=404, detail="No such link ID")
 
 
-@app.post("/api/id", response_model=GETLinkItem)
-async def create_by_id(item: POSTLinkItem):
+@app.post(item_endpoint, response_model=GETModel)
+async def create_by_id(item: POSTModel):
     item_id = generate_hash()
     redis_manager.set_dict(item_id, item.dict())
 
-    x = GETLinkItem(id=item_id, **item.dict())
-    return x
+    return GETModel(id=item_id, **item.dict())
 
 
 if __name__ == "__main__":
