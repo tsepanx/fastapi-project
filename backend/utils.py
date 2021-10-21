@@ -1,7 +1,6 @@
 import redis
-import random, string
-
-import logging
+import string
+import uuid
 
 
 def list_wrapper(func):
@@ -13,9 +12,7 @@ def list_wrapper(func):
 
 @list_wrapper
 def generate_hash(length=5):
-    chars = string.ascii_lowercase + string.digits * 2
-    for i in range(length):
-        yield random.choice(chars)
+    return uuid.uuid4().hex[:length]
 
 
 class RedisManager:
