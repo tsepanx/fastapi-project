@@ -1,6 +1,6 @@
 # Url shortener
 
-A dead simple url shortener website.
+A dead simple url shortener Fullstack project
 
 #### Realisation
 
