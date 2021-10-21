@@ -33,7 +33,7 @@ class POSTLinkItem(BaseModel):
     description: Optional[str] = None
 
 
-@app.get("/id/{item_id}", response_model=GETLinkItem)
+@app.get("api/id/{item_id}", response_model=GETLinkItem)
 async def get_by_id(item_id: str):
     if redis_manager.exists_item(item_id):
         d = redis_manager.get_dict(item_id)
@@ -42,7 +42,7 @@ async def get_by_id(item_id: str):
     raise fastapi.HTTPException(status_code=404, detail="No such link ID")
 
 
-@app.post("/shorten", response_model=GETLinkItem)
+@app.post("api/shorten", response_model=GETLinkItem)
 async def create_by_id(item: POSTLinkItem):
     item_id = generate_hash()
     redis_manager.set_dict(item_id, item.dict())
