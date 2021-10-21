@@ -20,6 +20,6 @@ def test_get_set():
 
     get_url = f'http://{hostname}:{port}/id/' + j['id']
 
-    r = requests.get(get_url(id)).json()
+    r = requests.get(get_url).json()
 
     assert j == r

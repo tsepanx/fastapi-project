@@ -3,14 +3,14 @@ import string
 import uuid
 
 
-def list_wrapper(func):
-    def wrapper(*args, **kwargs):
-        return ''.join(func(*args, **kwargs))
+# def list_wrapper(func):
+#     def wrapper(*args, **kwargs):
+#         return ''.join(func(*args, **kwargs))
+#
+#     return wrapper
 
-    return wrapper
 
-
-@list_wrapper
+# @list_wrapper
 def generate_hash(length=5):
     return uuid.uuid4().hex[:length]
 
