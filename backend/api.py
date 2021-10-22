@@ -24,8 +24,9 @@ class POSTResponseModel(BaseModel):
 
 
 LINK_ENDPOINT = '/api/url'
+PING_ENDPOINT = '/api/ping'
 
-GET_ENDPOINT = f'{LINK_ENDPOINT}/{{id}}'
+GET_ENDPOINT = LINK_ENDPOINT + '/{id}'
 POST_ENDPOINT = LINK_ENDPOINT
 
 app = FastAPI()
@@ -48,3 +49,8 @@ async def post(item: POSTModel):
     res_url = item.domain + '/' + item_id
 
     return POSTResponseModel.construct(id=item_id, short_url=res_url)
+
+
+@app.get(PING_ENDPOINT)
+async def ping():
+    return 'Ok'

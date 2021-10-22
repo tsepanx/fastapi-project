@@ -3,12 +3,22 @@ import random
 
 from api import POST_ENDPOINT, POSTModel
 
+hostname = "0.0.0.0"
+port = 8001
+
+base_domain = f'http://{hostname}:{port}'
+
+
+def test_ping():
+    url = base_domain + '/api/ping'
+
+    r = requests.get(url).json()
+
+    assert r == 'Ok'
+
 
 def test_get_set():
-    hostname = "0.0.0.0"
-    port = 8001
-
-    post_url = f'http://{hostname}:{port}' + POST_ENDPOINT
+    post_url = base_domain + POST_ENDPOINT
     print(post_url)
 
     url = str(random.randint(100, 1000))
