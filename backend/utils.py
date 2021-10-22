@@ -1,21 +1,23 @@
 import redis
-import string
 import uuid
 
 
-# def list_wrapper(func):
-#     def wrapper(*args, **kwargs):
-#         return ''.join(func(*args, **kwargs))
-#
-#     return wrapper
-
-
-# @list_wrapper
 def generate_hash(length=5):
     return uuid.uuid4().hex[:length]
 
 
-class RedisManager:
+class SingletonMeta(type):
+
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+
+class RedisManager(metaclass=SingletonMeta):
     def __init__(self, host="localhost", port=6379, pwd=""):
         self.__r = redis.StrictRedis(host=host, port=port, password=pwd, decode_responses=True)
 
