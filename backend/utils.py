@@ -39,5 +39,5 @@ class RedisManager(metaclass=SingletonMeta):
     def list_keys(self, pattern="*"):
         return self.__r.keys(pattern)
 
-    def exists_item(self, item_id: str):
+    def exists(self, item_id: str):
         return self.__r.exists(item_id)

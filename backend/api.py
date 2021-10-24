@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import FastAPI
 import fastapi.exceptions
 from pydantic import BaseModel
@@ -8,49 +10,38 @@ pwd = "foobared"
 
 redis_manager = RedisManager(host=host, pwd=pwd)
 
-
-class GETModel(BaseModel):
-    destination: str
-
-
-class POSTModel(BaseModel):
-    destination: str
-    domain: str
-
-
-class POSTResponseModel(BaseModel):
-    id: str
-    short_url: str
-
-
-LINK_ENDPOINT = '/api/url'
-PING_ENDPOINT = '/api/ping'
-
-GET_ENDPOINT = LINK_ENDPOINT + '/{id}'
-POST_ENDPOINT = LINK_ENDPOINT
-
 app = FastAPI()
 
 
-@app.get(GET_ENDPOINT, response_model=GETModel)
+class GetModel(BaseModel):
+    id: str
+    name: str
+    description: Optional[str]
+
+
+ITEM_ENDPOINT = '/api/item'
+PING_ENDPOINT = '/api/ping'
+
+
+@app.get(ITEM_ENDPOINT + '/{id}', response_model=GetModel)
 async def get(id: str):
-    if redis_manager.exists_item(id):
+    if redis_manager.exists(id):
         d = redis_manager.get_dict(id)
 
-        return GETModel(id=id, **d)
-    raise fastapi.HTTPException(status_code=404, detail="No such link ID")
+        return GetModel(id=id, **d)
+    raise fastapi.HTTPException(status_code=404, detail="id not found")
 
 
-@app.post(POST_ENDPOINT, response_model=POSTResponseModel)
-async def post(item: POSTModel):
-    item_id = generate_hash()
-    redis_manager.set_dict(item_id, item.dict())
+@app.post(ITEM_ENDPOINT)
+async def post(item: GetModel):
+    d = item.dict()
+    d.pop('id')
 
-    res_url = item.domain + '/' + item_id
+    redis_manager.set_dict(item.id, d)
 
-    return POSTResponseModel.construct(id=item_id, short_url=res_url)
+    return fastapi.Response('ok', 201)
 
 
 @app.get(PING_ENDPOINT)
 async def ping():
-    return 'Ok'
+    return fastapi.Response('ok', 200)

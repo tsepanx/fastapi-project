@@ -1,7 +1,7 @@
 import requests
 import random
 
-from api import POST_ENDPOINT, POSTModel
+from api import ITEM_ENDPOINT, PING_ENDPOINT, GetModel
 
 hostname = "0.0.0.0"
 port = 8001
@@ -10,28 +10,34 @@ base_domain = f'http://{hostname}:{port}'
 
 
 def test_ping():
-    url = base_domain + '/api/ping'
+    url = base_domain + PING_ENDPOINT
 
     r = requests.get(url).json()
 
-    assert r == 'Ok'
+    assert r == 'ok'
 
 
 def test_get_set():
-    post_url = base_domain + POST_ENDPOINT
+    post_url = base_domain + ITEM_ENDPOINT
     print(post_url)
 
-    url = str(random.randint(100, 1000))
-    domain = 'me.xyz'
+    m_id = str(random.randint(100, 1000))
+    m_name = m_id + '123'
+    m_desc = m_id + 'desc'
 
-    data = POSTModel.construct(destination=url, domain=domain).json()
+    data = GetModel.construct(
+        id=m_id,
+        name=m_name,
+        description=m_desc
+    ).dict()
 
-    j = requests.post(post_url, data).json()
+    print(data)
+    print(type(data))
 
-    get_url = post_url + '/' + j['id']
+    j = requests.post(post_url, json=data)
+
+    get_url = post_url + '/' + m_id
 
     r = requests.get(get_url).json()
 
     print(j, r, sep='\n')
-
-    assert r['destination'] == url
