@@ -2,6 +2,9 @@ import redis
 import uuid
 
 
+ok_status = {'detail': 'Ok'}
+
+
 def generate_hash(length=5):
     return uuid.uuid4().hex[:length]
 

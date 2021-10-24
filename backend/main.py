@@ -1,6 +1,7 @@
 import uvicorn
-from api import app, redis_manager
 
+from api.api import app
+from api.endpoints.items import redis_manager
 
 if __name__ == "__main__":
     print(redis_manager.list_keys())

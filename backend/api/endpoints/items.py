@@ -1,18 +1,22 @@
 from typing import Optional
 
-from fastapi import FastAPI, status
+from fastapi import status, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 
 from pydantic import BaseModel
-from utils import RedisManager
+
+from backend.utils import ok_status
+from backend.utils import RedisManager
 
 host = "192.168.0.115"  # TODO store as secrets
 pwd = "foobared"
 
 redis_manager = RedisManager(host=host, pwd=pwd)
 
-app = FastAPI()
+router = APIRouter(
+    prefix='/api/item'
+)
 
 
 class GetModel(BaseModel):
@@ -21,16 +25,7 @@ class GetModel(BaseModel):
     description: Optional[str]
 
 
-ITEM_ENDPOINT = '/api/item'
-PING_ENDPOINT = '/api/ping'
-
-ok_status = {'detail': 'Ok'}
-
-
-@app.get(
-    ITEM_ENDPOINT + '/{id}',
-    response_model=GetModel
-)
+@router.get('/{id}', response_model=GetModel)
 async def get(id: str):
     if redis_manager.exists(id):
         d = redis_manager.get_dict(id)
@@ -43,7 +38,7 @@ async def get(id: str):
     )
 
 
-@app.post(ITEM_ENDPOINT)
+@router.post('/')
 async def post(item: GetModel):
     d = item.dict()
     d.pop('id')
@@ -52,13 +47,5 @@ async def post(item: GetModel):
 
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
-        content=ok_status
-    )
-
-
-@app.get(PING_ENDPOINT)
-async def ping():
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
         content=ok_status
     )

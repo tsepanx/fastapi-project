@@ -1,7 +1,9 @@
 import requests
 import random
 
-from api import ITEM_ENDPOINT, PING_ENDPOINT, GetModel, ok_status
+from backend.api.endpoints import items
+from backend.api.endpoints.items import GetModel
+from backend.utils import ok_status
 
 hostname = "0.0.0.0"
 port = 8001
@@ -10,7 +12,7 @@ base_domain = f'http://{hostname}:{port}'
 
 
 def test_ping():
-    url = base_domain + PING_ENDPOINT
+    url = base_domain
 
     r = requests.get(url).json()
 
@@ -18,7 +20,7 @@ def test_ping():
 
 
 def test_get_set():
-    post_url = base_domain + ITEM_ENDPOINT
+    post_url = base_domain + items.router.prefix
     print(post_url)
 
     m_id = str(random.randint(100, 1000))
