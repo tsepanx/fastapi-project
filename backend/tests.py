@@ -1,7 +1,7 @@
 import requests
 import random
 
-from api import ITEM_ENDPOINT, PING_ENDPOINT, GetModel
+from api import ITEM_ENDPOINT, PING_ENDPOINT, GetModel, ok_status
 
 hostname = "0.0.0.0"
 port = 8001
@@ -14,7 +14,7 @@ def test_ping():
 
     r = requests.get(url).json()
 
-    assert r == 'ok'
+    assert r == ok_status
 
 
 def test_get_set():
@@ -34,10 +34,14 @@ def test_get_set():
     print(data)
     print(type(data))
 
-    j = requests.post(post_url, json=data)
+    j = requests.post(post_url, json=data).json()
+
+    assert j == ok_status
 
     get_url = post_url + '/' + m_id
 
     r = requests.get(get_url).json()
 
     print(j, r, sep='\n')
+
+    assert r['id'] == m_id
