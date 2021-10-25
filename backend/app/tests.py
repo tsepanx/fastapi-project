@@ -1,12 +1,13 @@
 import requests
 import random
 
-from api.endpoints import items
-from api.endpoints.items import GetModel
-from utils import ok_status
+from app.api.endpoints import items
+from app.api.endpoints.items import GetModel
+from app.core.config import settings
+from app.utils import ok_status
 
-hostname = "0.0.0.0"
-port = 8001
+hostname = settings.HTTP_HOST
+port = settings.HTTP_PORT
 
 base_domain = f'http://{hostname}:{port}'
 
@@ -47,3 +48,4 @@ def test_get_set():
     print(j, r, sep='\n')
 
     assert r['id'] == m_id
+    assert r['description'] == m_desc

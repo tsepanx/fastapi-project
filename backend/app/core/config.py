@@ -1,8 +1,11 @@
-import dotenv
+import dotenv, pprint
 from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
+    HTTP_HOST: str
+    HTTP_PORT: int
+
     REDIS_HOST: str
     REDIS_PORT: int
     REDIS_PASSWORD: str
@@ -13,4 +16,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-print(settings.dict())
+pprint.pprint(settings.dict())
