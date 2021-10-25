@@ -1,16 +1,11 @@
 import redis
-import uuid
 
+from app.core.config import settings
 
 ok_status = {'detail': 'Ok'}
 
 
-def generate_hash(length=5):
-    return uuid.uuid4().hex[:length]
-
-
 class SingletonMeta(type):
-
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
@@ -44,3 +39,9 @@ class RedisManager(metaclass=SingletonMeta):
 
     def exists(self, item_id: str):
         return self.__r.exists(item_id)
+
+
+redis_manager = RedisManager(
+    host=settings.REDIS_HOST,
+    pwd=settings.REDIS_PASSWORD
+)

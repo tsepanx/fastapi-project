@@ -1,17 +1,12 @@
-from typing import Optional
-
 from fastapi import status, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 
 from pydantic import BaseModel
+from typing import Optional
 
-from app.utils import ok_status, RedisManager
+from app.utils import ok_status, redis_manager
 
-host = "192.168.0.115"  # TODO store as secrets
-pwd = "foobared"
-
-redis_manager = RedisManager(host=host, pwd=pwd)
 
 router = APIRouter(
     prefix='/api/item'

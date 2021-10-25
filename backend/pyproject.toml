@@ -6,12 +6,13 @@ authors = ["tsepanx <77626319+tsepanx@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.70.0"
-uvicorn = {extras = ["standard"], version = "^0.15.0"}
-redis = "^3.5.3"
-pydantic = "^1.8.2"
-requests = "^2.26.0"
-pytest = "^6.2.5"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+redis = "*"
+pydantic = "*"
+requests = "*"
+pytest = "*"
+python-dotenv = "*"
 
 [tool.poetry.dev-dependencies]
 

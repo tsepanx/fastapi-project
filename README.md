@@ -15,6 +15,8 @@ poetry install
 # ---
 
 cd backend
+
 PYTHONPATH="./app" uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+# OR
 PYTHONPATH="." python app/main.py
 ```

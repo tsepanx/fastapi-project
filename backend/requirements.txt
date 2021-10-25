@@ -5,3 +5,4 @@ redis
 pydantic
 requests
 pytest
+python-dotenv
