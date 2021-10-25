@@ -16,8 +16,13 @@ class SingletonMeta(type):
 
 
 class RedisManager(metaclass=SingletonMeta):
-    def __init__(self, host="localhost", port=6379, pwd=""):
-        self.__r = redis.StrictRedis(host=host, port=port, password=pwd, decode_responses=True)
+    def __init__(self, host, port, password):
+        self.__r = redis.Redis(
+            host=host,
+            port=port,
+            password=password,
+            decode_responses=True
+        )
 
     def get_item(self, key: str):
         return self.__r.get(key)
@@ -43,5 +48,6 @@ class RedisManager(metaclass=SingletonMeta):
 
 redis_manager = RedisManager(
     host=settings.REDIS_HOST,
-    pwd=settings.REDIS_PASSWORD
+    port=settings.REDIS_PORT,
+    password=settings.REDIS_PASSWORD
 )
