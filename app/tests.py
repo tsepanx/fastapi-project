@@ -1,9 +1,9 @@
 import requests
 import random
 
-from backend.api.endpoints import items
-from backend.api.endpoints.items import GetModel
-from backend.utils import ok_status
+from api.endpoints import items
+from api.endpoints.items import GetModel
+from utils import ok_status
 
 hostname = "0.0.0.0"
 port = 8001

@@ -6,7 +6,7 @@ from fastapi.exceptions import HTTPException
 
 from pydantic import BaseModel
 
-from backend.utils import ok_status, RedisManager
+from app.utils import ok_status, RedisManager
 
 host = "192.168.0.115"  # TODO store as secrets
 pwd = "foobared"

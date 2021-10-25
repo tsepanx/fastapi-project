@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 
-from backend.api.endpoints import items
-from backend.utils import ok_status
+from app.api.endpoints import items
+from app.utils import ok_status
 
 app = FastAPI()
 app.include_router(items.router)
