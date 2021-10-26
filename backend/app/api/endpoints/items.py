@@ -59,8 +59,6 @@ async def get_list():
     res = []
     for i in redis_manager.list_keys('*'):
         d = redis_manager.get_dict(i)
-        # item = schemas.ItemRetrieve(id=i, **d)
-        # res.append(item)
         res.append(with_id(i, d))
 
     return res
