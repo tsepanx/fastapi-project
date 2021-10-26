@@ -1,8 +1,14 @@
+import secrets
+
 import redis
 
 from app.core.config import settings
 
 ok_status = {'detail': 'Ok'}
+
+
+def generate_id():
+    return secrets.token_urlsafe(8)
 
 
 class SingletonMeta(type):

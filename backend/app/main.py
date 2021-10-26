@@ -1,7 +1,7 @@
 import uvicorn
 
 from api.api import app
-from api.endpoints.items import redis_manager
+from app.utils import redis_manager
 from app.core.config import settings
 
 

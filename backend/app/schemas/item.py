@@ -10,14 +10,9 @@ class ItemBase(BaseModel):
 
 
 class ItemCreate(ItemBase):
-    id: str  # hash
     title: str
     text: str
 
 
 class Item(ItemCreate):
-    pass
-
-
-class ItemRetrieve(ItemCreate):
-    pass
+    id: str
