@@ -1,5 +1,9 @@
 # FastAPI project
 
+A simple project template in Python using framework `FastAPI`.
+
+Endpoints available:
+- `/api/item` (CRUD)
 
 ### Run
 
