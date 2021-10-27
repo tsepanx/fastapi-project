@@ -5,6 +5,13 @@ A simple project template in Python using framework `FastAPI`.
 Endpoints available:
 - `/api/item` (CRUD)
 
+### Setup
+
+```bash
+cp prod.env .env
+```
+And edit environment variables accordingly.
+
 ### Run
 
 ```bash
