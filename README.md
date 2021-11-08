@@ -34,6 +34,12 @@ PYTHONPATH="." python app/main.py
 
 ### Docker
 
+Don't forget to set 
+```
+REDIS_HOST=redis # Docker option
+```
+in .env file
+
 #### Build image
 
 ```bash
@@ -42,8 +48,6 @@ docker build -t fastapi-test .
 ```
 
 #### Run with docker-compose
-
-You may firstly edit `docker-compose.yml` before run:
 
 from the project root dir:
 ```bash
